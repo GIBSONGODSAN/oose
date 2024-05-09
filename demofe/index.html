@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrontEnd</title>
+</head>
+<body>
+    <h3>Send Data</h3>
+    <form onsubmit="event.preventDefault(); sendLoginData();">
+    <input type="text" id="value1" placeholder="Value1">
+    <input type="text" id="value2" placeholder="Value2">
+    <input type="number" id="value3" placeholder="Value3">
+    <button type="submit">Send Data</button>
+</form>
+
+    <h3>Get Data</h3>
+    <form onsubmit="event.preventDefault(); getDetails();">
+        <input type="text" id="value4" placeholder="Value1">
+        <button type="submit">Get Data</button>
+    </form>
+    <div id="result"></div>
+    <script>
+        function sendLoginData() {
+            const value1 = document.getElementById('value1').value;
+            const value2 = document.getElementById('value2').value;
+            const value3 = document.getElementById('value3').value;
+            const data = {
+                "value1": value1,
+                "value2": value2,
+                "value3": value3
+            };
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://localhost:8080/api/record/saveRecord", true);
+            xhr.setRequestHeader('Content-Type', 'application/json');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    console.log(xhr.responseText);
+                }
+                else {
+                    console.log(xhr.responseText);
+                }
+            }
+            xhr.send(JSON.stringify(data));
+        }
+        function getDetails() {
+            const value1 = document.getElementById('value4').value;
+            console.log(value1);
+            var xhr = new XMLHttpRequest();
+            const url = `http://localhost:8080/api/record/getRecord?param=${encodeURIComponent(value1)}`;
+            console.log(url);
+            debugger;
+            xhr.open("GET", url);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    document.getElementById('result').innerHTML = xhr.responseText;
+                }
+                else {
+                    console.log(xhr.responseText);
+                }
+            }
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
